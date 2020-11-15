@@ -1,0 +1,35 @@
+version: '3.5'
+services:
+    machine-1:
+        image: quay.io/coreos/etcd:v3.4.9
+        hostname: machine-1
+        container_name: machine-1
+        command: etcd --data-dir=data.etcd --name machine-1 --initial-advertise-peer-urls http://machine-1:2380 --listen-peer-urls http://0.0.0.0:2380 --advertise-client-urls http://machine-1:2379 --listen-client-urls http://0.0.0.0:2379 --initial-cluster machine-1=http://machine-1:2380,machine-2=http://machine-2:2380,machine-3=http://machine-3:2380 --initial-cluster-state new --initial-cluster-token etcd-token-01 --snapshot-count 100
+        ports:
+            - 10001:2379
+        networks:
+            - etcd-net
+
+    machine-2:
+        image: quay.io/coreos/etcd:v3.4.9
+        hostname: machine-2
+        container_name: machine-2
+        command: etcd --data-dir=data.etcd --name machine-2 --initial-advertise-peer-urls http://machine-2:2380 --listen-peer-urls http://0.0.0.0:2380 --advertise-client-urls http://machine-2:2379 --listen-client-urls http://0.0.0.0:2379 --initial-cluster machine-1=http://machine-1:2380,machine-2=http://machine-2:2380,machine-3=http://machine-3:2380 --initial-cluster-state new --initial-cluster-token etcd-token-01 --snapshot-count 100
+        ports:
+            - 10002:2379
+        networks:
+            - etcd-net
+
+    machine-3:
+        image: quay.io/coreos/etcd:v3.4.9
+        hostname: machine-3
+        container_name: machine-3
+        command: etcd --data-dir=data.etcd --name machine-3 --initial-advertise-peer-urls http://machine-3:2380 --listen-peer-urls http://0.0.0.0:2380 --advertise-client-urls http://machine-3:2379 --listen-client-urls http://0.0.0.0:2379 --initial-cluster machine-1=http://machine-1:2380,machine-2=http://machine-2:2380,machine-3=http://machine-3:2380 --initial-cluster-state new --initial-cluster-token etcd-token-01 --snapshot-count 100
+        ports:
+            - 10003:2379
+        networks:
+            - etcd-net
+                  
+networks:
+    etcd-net:
+        name: etcd-net
