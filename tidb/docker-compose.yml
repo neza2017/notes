@@ -1,0 +1,60 @@
+version: '3.5'
+
+services:
+ pd0:
+   image: pingcap/pd:latest
+   ports:
+     - "2379:2379"
+     - "2380:2380"
+   volumes:
+     - /etc/localtime:/etc/localtime:ro
+   command:
+     - --name=pd0
+     - --client-urls=http://0.0.0.0:2379
+     - --peer-urls=http://0.0.0.0:2380
+     - --advertise-client-urls=http://pd0:2379
+     - --advertise-peer-urls=http://pd0:2380
+     - --initial-cluster=pd0=http://pd0:2380
+     - --data-dir=/data/pd0
+     - --log-file=/logs/pd0.log
+
+ tikv0:
+   image: pingcap/tikv:latest
+   ports:
+     - "20160:20160"
+   volumes:
+     - /etc/localtime:/etc/localtime:ro
+   command:
+     - --addr=0.0.0.0:20160
+     - --advertise-addr=tikv0:20160
+     - --data-dir=/data/tikv0
+     - --pd=pd0:2379
+     - --log-file=/logs/tikv0.log
+   depends_on:
+     - "pd0"
+
+ tikdb0:
+   image: pingcap/tidb:latest
+   ports:
+     - "4001:4000"
+   volumes:
+     - /etc/localtime:/etc/localtime:ro
+   command:
+     - --store=tikv
+     - --path=pd0:2379
+     - --P=4000
+   depends_on:
+     - "tikv0"
+
+ tikdb1:
+   image: pingcap/tidb:latest
+   ports:
+     - "4002:4000"
+   volumes:
+     - /etc/localtime:/etc/localtime:ro
+   command:
+     - --store=tikv
+     - --path=pd0:2379
+     - --P=4000
+   depends_on:
+     - "tikv0"
