@@ -60,24 +60,24 @@ set(ARROW_INCLUDE_DIR "${ARROW_ROOT}/install/include")
 find_library(ARROW_LIB arrow
     NO_DEFAULT_PATH
     HINTS "${ARROW_LIBRARY_DIR}")
+message(STATUS "Arrow library: " ${ARROW_LIB})
 
 find_library(PARQUET_LIB parquet
         NO_DEFAULT_PATH
         HINTS "${ARROW_LIBRARY_DIR}")
+message(STATUS "Parquet library: " ${PARQUET_LIB})
 
 find_library(THRIFT_LIB thrift
         NO_DEFAULT_PATH
-        HINTS "${ARROW_ROOT}/build")
+        HINTS "${ARROW_ROOT}/build/thrift_ep-install/lib")
+message(STATUS "Thirft library: " ${THRIFT_LIB})
 
 find_library(UTF8PROC_LIB utf8proc
         NO_DEFAULT_PATH
-        HINTS "${ARROW_ROOT}/build")
+        HINTS "${ARROW_ROOT}/build/utf8proc_ep-install/lib")
+message(STATUS "utf8proc library: " ${UTF8PROC_LIB})
 
 if(ARROW_LIB AND PARQUET_LIB AND THRIFT_LIB AND UTF8PROC_LIB)
-  message(STATUS "Arrow library: " ${ARROW_LIB})
-  message(STATUS "Parquet library: " ${PARQUET_LIB})
-  message(STATUS "Thirft library: " ${THRIFT_LIB})
-  message(STATUS "utf8proc library: " ${UTF8PROC_LIB})
   set(ARROW_FOUND TRUE)
 endif(ARROW_LIB AND PARQUET_LIB AND THRIFT_LIB AND UTF8PROC_LIB)
 
