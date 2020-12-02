@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.14...3.17 FATAL_ERROR)
+
 set(ARROW_ROOT ${CMAKE_BINARY_DIR}/arrow)
 
 set(ARROW_CMAKE_ARGS " -DARROW_WITH_LZ4=OFF"
