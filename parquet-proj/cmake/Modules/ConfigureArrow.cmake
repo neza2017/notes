@@ -1,31 +1,17 @@
 set(ARROW_ROOT ${CMAKE_BINARY_DIR}/arrow)
 
-set(ARROW_CMAKE_ARGS " -DARROW_WITH_LZ4=OFF"
-    " -DARROW_WITH_ZSTD=OFF"
-    " -DARROW_WITH_BROTLI=OFF"
-    " -DARROW_WITH_SNAPPY=OFF"
-    " -DARROW_WITH_ZLIB=OFF"
+set(ARROW_CMAKE_ARGS
     " -DARROW_BUILD_STATIC=ON"
     " -DARROW_BUILD_SHARED=OFF"
-    " -DARROW_BOOST_USE_SHARED=OFF"
     " -DARROW_BUILD_TESTS=OFF"
     " -DARROW_TEST_MEMCHECK=OFF"
     " -DARROW_BUILD_BENCHMARKS=OFF"
-    " -DARROW_IPC=ON"
-    " -DARROW_FLIGHT=OFF"
-    " -DARROW_COMPUTE=OFF"
     " -DARROW_CUDA=OFF"
     " -DARROW_JEMALLOC=OFF"
     " -DARROW_PYTHON=OFF"
-    " -DARROW_USE_GLOG=OFF"
-    " -DARROW_DATASET=ON"
-    " -DARROW_CSV=ON"
     " -DARROW_BUILD_UTILITIES=OFF"
-    " -DARROW_HDFS=OFF"
     " -DARROW_PARQUET=ON"
-    " -DPARQUET_BUILD_SHARED=OFF"
-    " -DARROW_S3=OFF"
-    " -DCMAKE_VERBOSE_MAKEFILE=ON")
+    " -DPARQUET_BUILD_SHARED=OFF")
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Templates/Arrow.CMakeLists.txt.cmake"
     "${ARROW_ROOT}/CMakeLists.txt")
@@ -75,17 +61,25 @@ find_library(ARROW_LIB arrow
     NO_DEFAULT_PATH
     HINTS "${ARROW_LIBRARY_DIR}")
 
-find_library(ARROW_CUDA_LIB arrow_cuda
-    NO_DEFAULT_PATH
-    HINTS "${ARROW_LIBRARY_DIR}")
+find_library(PARQUET_LIB parquet
+        NO_DEFAULT_PATH
+        HINTS "${ARROW_LIBRARY_DIR}")
 
-if(ARROW_LIB AND ARROW_CUDA_LIB)
+find_library(THRIFT_LIB thrift
+        NO_DEFAULT_PATH
+        HINTS "${ARROW_ROOT}/build")
+
+find_library(UTF8PROC_LIB utf8proc
+        NO_DEFAULT_PATH
+        HINTS "${ARROW_ROOT}/build")
+
+if(ARROW_LIB AND PARQUET_LIB AND THRIFT_LIB AND UTF8PROC_LIB)
   message(STATUS "Arrow library: " ${ARROW_LIB})
-  message(STATUS "Arrow CUDA library: " ${ARROW_CUDA_LIB})
+  message(STATUS "Parquet library: " ${PARQUET_LIB})
+  message(STATUS "Thirft library: " ${THRIFT_LIB})
+  message(STATUS "utf8proc library: " ${UTF8PROC_LIB})
   set(ARROW_FOUND TRUE)
-endif(ARROW_LIB AND ARROW_CUDA_LIB)
-
-set(FLATBUFFERS_ROOT "${ARROW_ROOT}/build/flatbuffers_ep-prefix/src/flatbuffers_ep-install")
+endif(ARROW_LIB AND PARQUET_LIB AND THRIFT_LIB AND UTF8PROC_LIB)
 
 message(STATUS "FlatBuffers installed here: " ${FLATBUFFERS_ROOT})
 set(FLATBUFFERS_INCLUDE_DIR "${FLATBUFFERS_ROOT}/include")
