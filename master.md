@@ -32,3 +32,7 @@ func NewMasterService() (Service, error)
 需要明确几个事情
 - 1.`GetDdChannel`，`GetTimeTickChannel`和`GetStatsChannel`这些 channel 分别是干什么的，直接通过 `API` 调用不就可以了吗?
 - 2.`Master`原先的`GetSysConfigs`是否需要保留
+
+master 与 data service 需要有关于 segment 统计信息的 rpc 通信
+
+master 向 data service 要 当前 segment 包含哪些 文件
