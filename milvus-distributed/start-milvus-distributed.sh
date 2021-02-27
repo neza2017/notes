@@ -2,6 +2,9 @@
 unset http_proxy
 unset https_proxy
 
+rm -rf /tmp/milvus
+export QUERY_NODE_ID=1
+
 pushd ~/work/milvus-distributed/deployments/docker
 docker-compose down
 docker-compose up -d
