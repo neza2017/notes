@@ -4,8 +4,9 @@
 ```bash
 git clone https://github.com/vim/vim.git
 cd vim
-./configure --enable-python3interp --with-x
+./configure --enable-python3interp --with-x --prefix=/usr/local
 make -j
+sudo make install
 ```
 the output of `./src/vim --version` should looks like this, make `+python3` and  `+clipboard` is enabled
 ```txt
@@ -56,9 +57,10 @@ Compilation: gcc -c -I. -Iproto -DHAVE_CONFIG_H -g -O2 -U_FORTIFY_SOURCE -D_FORT
 Linking: gcc -L/usr/local/lib -Wl,--as-needed -o vim -lSM -lICE -lXpm -lXt -lX11 -lXdmcp -lSM -lICE -lm -ltinfo -ldl -L/usr/lib/python3.8/config-3.8-x86_64-linux-gnu -lpython3.8 -lcrypt -lpthread -ldl -lutil -lm -lm 
 ```
 
+---
+
 ## 设置 vim 8.2 为默认
 ```bash
-sudo cp ./src/vim /usr/local/bin/
 sudo update-alternatives --install /usr/bin/vim vim /usr/local/bin/vim 40
 ```
 查询 `vim` 相关的软链接
@@ -89,6 +91,9 @@ There are 2 choices for the alternative vim (providing /usr/bin/vim).
 
 Press <enter> to keep the current choice[*], or type selection number
 ```
+
+---
+
 ## 安装 `Terminator`
 ```bash
 sudo apt-get install terminator
@@ -99,13 +104,18 @@ sudo apt-get install terminator
 | ctrl+shift+o | 横向切分窗口 |
 | ctrl+shift+e | 纵向切分窗口 |
 | alt+方向键    | 在窗口间调整 |
-| ctrl+shift+方向键 | 调整当前窗口大小 | 
+| ctrl+shift+方向键 | 调整当前窗口大小 |
+| ctrl+alt+上下方向键 | 在 ubuntu workspace 间切换 |
+
+---
 
 ## vim 基础配置
 ```vim
 set nocompatible
 set nu
 set updatetime=100
+
+syntax on
 
 " 使用空格代替冒号
 nnoremap <space> :
@@ -147,6 +157,15 @@ nnoremap <C-Left> <C-W><C-H>
 set hlsearch
 noremap <F8> :nohl<CR>
 inoremap <F8> :nohl<CR>a
+
+"copy to system clipboard
+noremap <Leader>y  "+y
+noremap <Leader>yy "+yy
+noremap <Leader>p  "+p
+
+"search select
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+nnoremap // yiw/\V<C-R>=escape(@",'/\')<CR><CR>
 ```
 
 这个配置的常用快捷键如下
@@ -156,6 +175,131 @@ inoremap <F8> :nohl<CR>a
 |ctrl+v | 纵向分屏 |
 |ctrl+方向键   | 在 split window 间切换 |
 |shift+方向键  | 调整 split window 的大小 |
+| `<Leader>`y | vim 中选择的内容拷贝到系统粘贴板 |
+| `<Leader>`yy | vim 中当前的行拷贝到系统粘贴板 |
+| `<Leader>p` | 从系统粘贴板中复制内容到 vim |
+|// | 全文查询选择的单词，按 `n` 跳转到下一个单词 |
 
+**默认的 `<Leader>` 键为字符`\`**
 
+---
 
+## 安装`VIM`插件管理 [plug](https://github.com/junegunn/vim-plug)
+
+```bash
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```
+
+---
+
+## 使用 `vim-plug` 安装插件
+`~/.vimrc` 的最后添加如下内容: 
+
+```vim
+call plug#begin('~/.vim/plugged')
+
+"auto complete codes
+Plug 'ycm-core/YouCompleteMe'
+
+" Grammer
+Plug 'w0rp/ale'
+
+Plug 'preservim/nerdtree'
+
+Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
+
+call plug#end()
+```
+编译 `YouCompleteMe`
+```bash
+cd ~/.vim/plugged/YouCompleteMe
+python3 install.py --clang-completer --go-completer
+```
+
+---
+
+# 插件配置
+`~/.vimrc` 中添加如下内容:
+```vim
+" ale linter
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_delay = 500
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+
+let g:ale_echo_cursor = 1
+let g:ale_completion_enabled = 1
+let g:ale_sign_column_always = 1
+let g:airline#extensions#ale#enabled = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:syntastic_python_flake8_args='--ignore=E501'
+let g:ale_fix_on_save = 1
+let g:ale_linters = {
+\   'python': ['flake8'],
+\   'zsh':['shell'],
+\   'cpp':['clang-format'],
+\   'go':['golangci-lint'],
+\}
+
+ let g:ale_fixers={
+ \ 'cpp': ['clang-format'],
+ \ 'go' : ['gofmt'],
+ \ 'python': ['remove_trailing_lines', 'trim_whitespace'],
+ \}
+
+" YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_server_log_level = 'info'
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_semantic_triggers =  {
+			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+			\ 'cs,lua,javascript': ['re!\w{2}'],
+			\ }
+let g:ycm_filetype_whitelist = {
+			\ "c":1,
+			\ "cpp":1,
+			\ "objc":1,
+            \ "go":1,
+            \ "python":1,
+			\ "sh":1,
+			\ "zsh":1,
+            \ "cmake":1,
+            \ "md":1,
+            \ "vim":1,
+			\ }
+map <c-g>  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+map <c-h>  :YcmCompleter GoToReferences<CR>
+
+" Leaderf
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_ShowDevIcons = 0
+let g:Lf_PreviewInPopup = 1
+
+noremap  <c-n>  :Leaderf mru<cr>
+
+" NERDTree
+nmap <F2> :NERDTreeToggle<cr>
+
+```
+
+这个配置的常用快捷键如下
+| 快捷键 | 含义 |
+|-------|-----|
+|`<Leader>f` | 模糊搜索文件 |
+|ctrl+n | 最近编辑过的文件
+|`<F2>` | 打开或关闭 `NERDTree` |
+|ctrl+g | 调整到函数定义 |
+|ctrl+o | 回到跳转前的位置 |
+
+在 `<Leaderf>` 的搜索文件的过程中，可以使用 `Tab` 在输入文件名查找合使用方向键查找间快速切换
