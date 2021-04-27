@@ -304,3 +304,33 @@ nmap <F2> :NERDTreeToggle<cr>
 |ctrl+o | 回到跳转前的位置 |
 
 在 `<Leaderf>` 的搜索文件的过程中，可以使用 `Tab` 在输入文件名查找合使用方向键查找间快速切换
+
+## ycm_c_c++_conf.py
+```python
+
+import os
+import ycm_core
+
+flags = [
+  '-Wall',
+  '-Wextra',
+  '-Werror',
+  '-Wno-long-long',
+  '-Wno-variadic-macros',
+  '-fexceptions',
+  '-ferror-limit=10000',
+  '-DNDEBUG',
+  '-std=c99',
+  '-xc',
+  '-isystem/usr/include/',
+  ]
+
+SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', ]
+
+def FlagsForFile( filename, **kwargs ):
+  return {
+  'flags': flags,
+  'do_cache': True
+  }
+
+```
