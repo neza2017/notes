@@ -164,8 +164,8 @@ noremap <Leader>yy "+yy
 noremap <Leader>p  "+p
 
 "search select
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-nnoremap // yiw/\V<C-R>=escape(@",'/\')<CR><CR>
+vnoremap <c-f> y/\V<C-R>=escape(@",'/\')<CR><CR>
+nnoremap <c-f> yiw/\V<C-R>=escape(@",'/\')<CR><CR>
 ```
 
 这个配置的常用快捷键如下
@@ -178,7 +178,7 @@ nnoremap // yiw/\V<C-R>=escape(@",'/\')<CR><CR>
 | `<Leader>`y | vim 中选择的内容拷贝到系统粘贴板 |
 | `<Leader>`yy | vim 中当前的行拷贝到系统粘贴板 |
 | `<Leader>p` | 从系统粘贴板中复制内容到 vim |
-|// | 全文查询选择的单词，按 `n` 跳转到下一个单词 |
+|ctrl+f | 全文查询选择的单词，按 `n` 跳转到下一个单词 |
 
 **默认的 `<Leader>` 键为字符`\`**
 
