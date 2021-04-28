@@ -74,20 +74,22 @@ I wanted my header files to just have the .h file ending (instead of .hh or .hpp
 To make ccls work with coc.nvim you have to make some changes to the coc-settings.json in your neovim config directory (mine is ~/.config/nvim):
 
 ```json
-"languageserver": {
-  "ccls": {
-    "command": "ccls",
-    "args": ["--log-file=/tmp/ccls.log", "-v=1"],
-    "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
-    "rootPatterns": [".ccls", "compile_commands.json"],
-    "initializationOptions": {
-       "cache": {
-         "directory": "/tmp/ccls"
-       },
-       "client": {
-        "snippetSupport": true
+{
+  "languageserver": {
+    "ccls": {
+      "command": "ccls",
+      "args": ["--log-file=/tmp/ccls.log", "-v=1"],
+      "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+      "rootPatterns": [".ccls", "compile_commands.json"],
+      "initializationOptions": {
+         "cache": {
+           "directory": "/tmp/ccls"
+         },
+         "client": {
+          "snippetSupport": true
+         }
        }
-     }
+    }
   }
 }
 ```
