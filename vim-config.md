@@ -139,7 +139,7 @@ set fileencoding=utf-8
 
 " split window
 nnoremap <c-s> :split<CR>
-nnoremap <c-v> :vsplit<CR>
+nnoremap <c-l> :vsplit<CR>
 
 " shift+方向键，调整 split windows 的大小 
 noremap <S-Down>  :res +10<CR>
@@ -172,7 +172,7 @@ nnoremap <c-f> yiw/\V<C-R>=escape(@",'/\')<CR><CR>
 | 快捷键 | 含义 |
 |-------|-----|
 |ctrl+s | 横向分屏 |
-|ctrl+v | 纵向分屏 |
+|ctrl+l | 纵向分屏 |
 |ctrl+方向键   | 在 split window 间切换 |
 |shift+方向键  | 调整 split window 的大小 |
 | `<Leader>`y | vim 中选择的内容拷贝到系统粘贴板 |
