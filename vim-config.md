@@ -279,7 +279,7 @@ let g:ycm_filetype_whitelist = {
             \ "vim":1,
 			\ }
 map <c-g>  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-map <c-h>  :YcmCompleter GoToReferences<CR>
+map <c-r>  :YcmCompleter GoToReferences<CR>
 
 " Leaderf
 let g:Lf_WindowPosition = 'popup'
@@ -300,7 +300,7 @@ nmap <F2> :NERDTreeToggle<cr>
 |ctrl+n | 最近编辑过的文件
 |`<F2>` | 打开或关闭 `NERDTree` |
 |ctrl+g | 调整到函数定义 |
-|ctrl+g | 查找所有引用 |
+|ctrl+r | 查找所有引用 |
 |ctrl+o | 回到跳转前的位置 |
 
 在 `<Leaderf>` 的搜索文件的过程中，可以使用 `Tab` 在输入文件名查找合使用方向键查找间快速切换
