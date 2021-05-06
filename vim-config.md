@@ -112,6 +112,7 @@ sudo apt-get install terminator
 ## vim 基础配置
 ```vim
 set nocompatible
+set backspace=indent,eol,start
 set nu
 set updatetime=100
 
