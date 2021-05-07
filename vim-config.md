@@ -106,6 +106,7 @@ sudo apt-get install terminator
 | alt+方向键    | 在窗口间调整 |
 | ctrl+shift+方向键 | 调整当前窗口大小 |
 | ctrl+alt+上下方向键 | 在 ubuntu workspace 间切换 |
+| F11 | ubuntu 全屏显示 |
 
 ---
 
