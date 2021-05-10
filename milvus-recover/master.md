@@ -30,3 +30,9 @@
 
 ### data service 过来的 new segment
 1. 每次新建一个 segment 时， data service 将 segment id 通过 msgstream 发送到 master
+2. master 需要将这个 segment id 更新到 collection meta
+
+
+## data node 过来的 segment flush
+1. data node 每次 flush 完成一个 segment 后，会将 segment id 通过 msgstream 发送 master
+2. master需要根据 segment id 将 binlog 取出，然后向 index service 发送请求，在这个 segment 上创建索引
