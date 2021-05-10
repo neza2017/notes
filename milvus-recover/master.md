@@ -29,4 +29,4 @@
     - 这里可能存在一个故障，就是 dd_msg 已经发送到 dd channel，但是 dd_flag 还未更新，那么可能导致 dd_msg 被重复到送到 dd channel，所有需要接收端是幂等，消息可以重复消费 
 
 ### data service 过来的 new segment
-1. 每次新建一个 segment 时， data service 回将 segment id 通过 msgstream 发送到 master
+1. 每次新建一个 segment 时， data service 将 segment id 通过 msgstream 发送到 master
