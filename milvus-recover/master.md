@@ -33,6 +33,11 @@
 2. master 需要将这个 segment id 更新到 collection meta
 
 
+
 ## data node 过来的 segment flush
 1. data node 每次 flush 完成一个 segment 后，会将 segment id 通过 msgstream 发送 master
 2. master需要根据 segment id 将 binlog 取出，然后向 index service 发送请求，在这个 segment 上创建索引
+
+
+## 调用外部 grpc 服务失败
+1. segment flush 完成后，需要 master 从 data service 获取 binlog path ，然后向 index service 发送请求，此处需要和 data service 以及 index service 存在 grpc 交互，如果 grpc 失败，则直接重连
