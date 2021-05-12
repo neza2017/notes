@@ -40,7 +40,6 @@
     - 根据幂等原则，如果有部分 segment id 向 index service 发送请求，此时 master 奔溃，此时客户端收到的请求是 create index 失败，等 master 重启后，会再次发送 create index 请求
     - 那么可能存在 部分 segment id 重复创建索引，index service 需要处理这种请求  
 
-
 ### 2.4 data service 过来的 new segment
 1. 每次新建一个 segment 时， data service 将 segment id 通过 msgstream 发送到 master
 2. master 需要将这个 segment id 更新到 collection meta，同时在 etcd 中记该 msgstream 的 position
@@ -59,3 +58,27 @@
 
 ### 2.6 调用外部 grpc 服务失败
 1. segment flush 完成后，需要 master 从 data service 获取 binlog path ，然后向 index service 发送请求，此处需要和 data service 以及 index service 存在 grpc 交互，如果 grpc 失败，则直接重连
+2. master 需要监听 index service 和 data service 在 etcd 注册的服务，如果服务断开，则自动重连
+
+### 2.7 新增 create collection 时分配 virtual channel
+1. proxy 向 master 发送 grpc 的请求时，新增一个 field ，number of virtual channels, 表示当前 colleciton 需要分配 virtual channel 数量
+2. collection 之间不共享 virtual channel, 一个物理 channel 上只会有一个属于这个 collection 的 virtual channel, collection 的多个 virtual channel 分布在不同的物理 channel 上 
+3. 在当前实现中，virtual channel 和物理 channel 采用一对一的关系，物理 channel 总数随 virtual channel 的增加而增加；后期需要将物理 channel 总数固定，多个 virtual channel 共享一个物理 channel
+4. virtual channel 的名字为全局唯一，collection 的 meta 中记录着 virtual channel 与 物理 channel 的对应关系
+
+### 2.8 新增 proxy 向 master service 发送时间同步信号
+1. 一个 virtual channel 可以接收多个 proxy 插入的数据，所以 virtual channel 内数据在时间戳上不是单调递增的
+2. 所有 proxy 定期向 master 上报当前该 proxy 负责的所有 virtual channel 的时间戳
+3. master service 搜集到每个 virtual channel 上所有 proxy 上报的时间戳后取最小值得到该 virtual channel 的时间戳，然后将时间戳插入该 virtual channel  
+4. proxy 通过 grpc 向 master 上报时间戳，一次 grpc 请求发送该 proxy 所负责的所有 virtual channel 的时间戳
+5. proxy 在启动时需要在 etcd 中注册自己，master 会监听对应的 key 确定当前有几个存活的 proxy，进而确定是否所有的 proxy 都向 master 发送了时间戳
+6. 如果某个 proxy 没有在 etcd 中注册，却向 master 发送时间戳或其他任何grpc 请求，那么master 会忽略该 grpc 请求
+
+### 2.9 新增向 etcd 注册服务
+1. master 启动时需要向 etcd 注册自己
+2. 注册的内容需要包括 ip 地址，端口，自身 id, 全局递增的时间戳 
+3. 这里有一点需要讨论，所有依赖的服务，例如 master 依赖 data service, index service，是不是都通过 etcd 的服务发现实现依赖解耦更合理，通过 etcd 获得依赖服务的 ip 地址和端口，而不是通过配置文件获得依赖服务的 ip 地址和端口，只有第三方组件，如 pulsar/minIO ，的服务地址及端口通过配置文件获得 
+
+### 2.10 删除 proxy service 的相关代码
+1. proxy service 将被移除
+2. proxy service 负责的时间同步工作做了部分简化，并交由 master 完成（2.8小节）
