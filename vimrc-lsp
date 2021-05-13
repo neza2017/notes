@@ -54,6 +54,9 @@ call plug#begin('~/.vim/plugged')
 ""auto complete codes
 "Plug 'ycm-core/YouCompleteMe'
 
+"" git
+Plug 'tpope/vim-fugitive'
+
 " Grammer
 Plug 'w0rp/ale'
 
