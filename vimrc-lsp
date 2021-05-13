@@ -71,6 +71,9 @@ Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'shougo/vimshell.vim'
 
+" Auto Pair
+Plug 'jiangmiao/auto-pairs'
+
 call plug#end()
 
 " ale linter
