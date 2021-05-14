@@ -131,9 +131,11 @@ noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
 nmap <leader>fs <Plug>LeaderfGtagsSymbol
 vmap <leader>fs <Plug>LeaderfGtagsSymbol
-nmap <leader>fg :Leaderf gtags -s
+
+"search with gtags
+nmap <leader>fg :Leaderf gtags -s 
 "search with rg
-nmap <leader>fh :Leaderf rg
+nmap <leader>fh :Leaderf rg 
 
 "noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
 "noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
