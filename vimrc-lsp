@@ -53,6 +53,8 @@ nnoremap <c-f> yiw/\V<C-R>=escape(@",'/\')<CR><CR>
 
 nnoremap <space> :
 vnoremap <space> :
+inoremap jj <esc>
+
 
 call plug#begin('~/.vim/plugged')
 
