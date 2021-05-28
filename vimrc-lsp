@@ -31,11 +31,15 @@ set encoding=utf-8
 set termencoding=utf-8
 set fileencoding=utf-8
 
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-W> <C-W><C-W>
+"nnoremap <C-J> <C-W><C-J>
+"nnoremap <C-K> <C-W><C-K>
+"nnoremap <C-L> <C-W><C-L>
+"nnoremap <C-H> <C-W><C-H>
+"nnoremap <C-W> <C-W><C-W>
+
+nnoremap <C-J> :tabp<cr>
+nnoremap <C-K> :tabn<cr>
+nnoremap <C-H> <C-W><C-W>
 
 " highlight search
 set hlsearch
