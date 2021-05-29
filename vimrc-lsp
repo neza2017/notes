@@ -50,6 +50,12 @@ noremap <Leader>y  "+y
 noremap <Leader>yy "+yy
 noremap <Leader>p  "+p
 
+"copy file name to system clipboard
+",cs -> just copy file name
+",cl -> copy filen name with path
+nmap ,cs :let @+=expand("%")<CR>
+nmap ,cl :let @+=expand("%:p")<CR>
+
 "search select
 vnoremap <c-f> y/\V<C-R>=escape(@",'/\')<CR><CR>
 nnoremap <c-f> yiw/\V<C-R>=escape(@",'/\')<CR><CR>
