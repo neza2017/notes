@@ -203,6 +203,7 @@ function! s:on_lsp_buffer_enabled() abort
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
     " go back to origin buffer
     nmap <buffer> ga <c-o>
+    nmap <buffer> gb <c-i>
     nmap <buffer> gd <plug>(lsp-definition)
     nmap <buffer> gs <plug>(lsp-document-symbol-search)
     nmap <buffer> gh <plug>(lsp-workspace-symbol-search)
