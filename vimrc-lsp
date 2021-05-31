@@ -47,8 +47,12 @@ inoremap <F3> :nohl<CR>a
 
 "copy to system clipboard
 noremap <Leader>y  "+y
+noremap <Leader>yw "+yiw
 noremap <Leader>yy "+yy
 noremap <Leader>p  "+p
+
+"copy word to buffer
+noremap yw yiw
 
 "copy file name to system clipboard
 ",cs -> just copy file name
