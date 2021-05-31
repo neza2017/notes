@@ -47,7 +47,7 @@ inoremap <F3> :nohl<CR>a
 
 "copy to system clipboard
 noremap <Leader>y  "+y
-noremap <Leader>yw "+yiw
+noremap <Leader>wy "+yiw
 noremap <Leader>yy "+yy
 noremap <Leader>p  "+p
 
