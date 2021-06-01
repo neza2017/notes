@@ -182,7 +182,15 @@ if executable('pyls')
         \ 'name': 'pyls',
         \ 'cmd': {server_info->['pyls']},
         \ 'allowlist': ['python'],
-        \ })
+        \ 'workspace_config': {
+        \    'pyls':
+        \        {'configurationSources': ['flake8'],
+        \         'plugins': {'flake8': {'enabled': v:true},
+        \                     'pyflakes': {'enabled': v:false},
+        \                     'pycodestyle': {'enabled': v:false},
+        \                    }
+        \         }
+        \ }})
 endif
 
 if executable('gopls')
