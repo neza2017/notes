@@ -176,6 +176,7 @@ nmap <leader>fh :Leaderf rg
 nmap <F2> :NERDTreeToggle<cr>
 
 "" lsp
+"ref : https://jdhao.github.io/2020/11/05/pyls_flake8_setup/
 if executable('pyls')
     " pip install python-language-server
     au User lsp_setup call lsp#register_server({
