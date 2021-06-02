@@ -40,6 +40,10 @@ set fileencoding=utf-8
 nnoremap <C-H> <C-W><C-W>
 nnoremap <C-U> :tabn<cr>
 
+" page down and page up
+nnoremap <C-J> <C-D>
+nnoremap <C-K> <C-U>
+
 " highlight search
 set hlsearch
 noremap <F3> :nohl<CR>
