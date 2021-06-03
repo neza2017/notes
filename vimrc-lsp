@@ -178,6 +178,9 @@ nmap <leader>fh :Leaderf rg
 "noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
 
 nmap <F2> :NERDTreeToggle<cr>
+let NERDTreeMapUpdir='\u'
+let NERDTreeMapUpdirKeepOpen='\U'
+let NERDTreeMapChangeRoot='\c'
 
 "" lsp
 "ref : https://jdhao.github.io/2020/11/05/pyls_flake8_setup/
