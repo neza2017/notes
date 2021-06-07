@@ -17,6 +17,9 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 set expandtab
 set tabstop=4
 set shiftwidth=4
+set autoread
+set ignorecase
+set smartcase
 
 " Resize split 
 noremap <S-J>  :res +5<CR>
@@ -46,6 +49,7 @@ nnoremap <C-K> <C-U>
 
 " highlight search
 set hlsearch
+set incsearch
 noremap <F3> :nohl<CR>
 inoremap <F3> :nohl<CR>a
 
