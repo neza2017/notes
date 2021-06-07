@@ -54,8 +54,8 @@ nnoremap <C-K> <C-U>
 " highlight search
 set hlsearch
 set incsearch
-noremap <F3> :nohl<CR>
-inoremap <F3> :nohl<CR>a
+noremap <leader><cr> :nohl<CR>
+inoremap <leader><cr> :nohl<CR>a
 
 "copy to system clipboard
 noremap <Leader>y  "+y
