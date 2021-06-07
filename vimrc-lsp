@@ -21,6 +21,10 @@ set autoread
 set ignorecase
 set smartcase
 
+set nobackup
+set nowb
+set noswapfile
+
 " Resize split 
 noremap <S-J>  :res +5<CR>
 noremap <S-K>  :res -5<CR>
