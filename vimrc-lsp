@@ -25,6 +25,13 @@ set nobackup
 set nowb
 set noswapfile
 
+
+"" example of use grep vim
+"" 1. grep {pattern} in git files                   -> :vimgrep {pattern} `git ls-files`
+"" 2. open quickfix-list to navigate the result     -> :copen
+let Grep_Skip_Dirs = 'RCS CVS SCCS .svn .git generated'
+set grepprg=/bin/grep\ -nH
+
 " Resize split 
 noremap <S-J>  :res +5<CR>
 noremap <S-K>  :res -5<CR>
