@@ -31,6 +31,8 @@ set noswapfile
 "" 2. open quickfix-list to navigate the result     -> :copen
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn .git generated'
 set grepprg=/bin/grep\ -nH
+noremap gn :cn<CR>
+noremap gp :cp<CR>
 
 " Resize split 
 noremap <S-J>  :res +5<CR>
@@ -92,6 +94,12 @@ vnoremap <space> :
 inoremap jj <esc>
 cnoremap jj <c-c><esc>
 
+
+set undofile
+if !isdirectory($HOME."/.vim/undodir")
+    call mkdir($HOME."/.vim/undodir","p")
+endif
+set undodir =$HOME."/.vim/undodir"
 
 call plug#begin('~/.vim/plugged')
 
