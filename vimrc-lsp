@@ -75,6 +75,7 @@ noremap <Leader>p  "+p
 "copy word to buffer
 noremap yw yiw
 noremap wp viw"0p
+nnoremap dw diw
 
 "" yank text in normal mode and paste in commnad line
 "" <C-R>"
@@ -93,7 +94,6 @@ nnoremap <space> :
 vnoremap <space> :
 inoremap jj <esc>
 cnoremap jj <c-c><esc>
-
 
 set undofile
 if !isdirectory($HOME."/.vim/undodir")
@@ -244,8 +244,8 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> gk <plug>(lsp-hover)
-    inoremap <buffer> <expr><c-f> lsp#scroll(+4)
-    inoremap <buffer> <expr><c-d> lsp#scroll(-4)
+    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
     let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
