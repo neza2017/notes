@@ -24,6 +24,7 @@ set smartcase
 set nobackup
 set nowb
 set noswapfile
+colorscheme darkblue
 
 
 "" example of use grep vim
