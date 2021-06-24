@@ -107,9 +107,6 @@ call plug#begin('~/.vim/plugged')
 "" git
 Plug 'tpope/vim-fugitive'
 
-" Grammer
-Plug 'w0rp/ale'
-
 Plug 'preservim/nerdtree'
 
 " lsp
@@ -128,37 +125,6 @@ Plug 'shougo/vimshell.vim'
 Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
-
-" ale linter
-let g:ale_linters_explicit = 1
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_enter = 0
-let g:ale_lint_delay = 500
-let g:ale_completion_delay = 500
-let g:ale_echo_delay = 20
-
-let g:ale_echo_cursor = 1
-let g:ale_completion_enabled = 1
-let g:ale_sign_column_always = 1
-let g:airline#extensions#ale#enabled = 1
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:syntastic_python_flake8_args='--ignore=E501'
-let g:ale_fix_on_save = 1
-let g:ale_linters = {
-\   'python': ['flake8'],
-\   'zsh':['shell'],
-\   'cpp':['clang-format'],
-\   'go':['golangci-lint'],
-\}
-
- let g:ale_fixers={
- \ 'cpp': ['clang-format'],
- \ 'go' : ['gofmt'],
- \ 'python': ['remove_trailing_lines', 'trim_whitespace'],
- \}
 
 
 let g:Lf_ShowDevIcons = 0
