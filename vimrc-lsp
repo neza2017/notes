@@ -64,8 +64,8 @@ nnoremap <C-K> <C-U>
 " highlight search
 set hlsearch
 set incsearch
-noremap <c-g> :nohl<CR>
-inoremap <c-g> :nohl<CR>a
+nnoremap gfn :nohl<CR>
+inoremap gfn :nohl<CR>a
 
 "copy to system clipboard
 noremap <Leader>y  "+y
@@ -74,8 +74,8 @@ noremap <Leader>yy "+yy
 noremap <Leader>p  "+p
 
 "copy word to buffer
-noremap yw yiw
-noremap wp viw"0p
+nnoremap yw yiw
+nnoremap wp viw"0p
 nnoremap dw diw
 
 "" yank text in normal mode and paste in commnad line
@@ -88,8 +88,8 @@ nmap ,cs :let @+=expand("%")<CR>
 nmap ,cl :let @+=expand("%:p")<CR>
 
 "search select
-vnoremap <c-f> y/\V<C-R>=escape(@",'/\')<CR><CR>
-nnoremap <c-f> yiw/\V<C-R>=escape(@",'/\')<CR><CR>
+vnoremap gff y/\V<C-R>=escape(@",'/\')<CR><CR>
+nnoremap gff yiw/\V<C-R>=escape(@",'/\')<CR><CR>
 
 nnoremap <space> :
 vnoremap <space> :
