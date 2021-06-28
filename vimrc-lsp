@@ -6,7 +6,8 @@ set updatetime=100
 set mouse=a       " Enable mouse (esp. for balloons and scrolling in popups)
 set ttymouse=sgr  " .. also in 'terminals that emit SGR-styled mouse reporting'
 
-"set foldmethod=indent
+set foldmethod=indent
+set foldlevel=99
 "set foldopen=all
 
 syntax on
@@ -216,11 +217,6 @@ function! s:on_lsp_buffer_enabled() abort
 
     let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-    " za fold and unfold code
-    set foldmethod=expr
-      \ foldexpr=lsp#ui#vim#folding#foldexpr()
-      \ foldtext=lsp#ui#vim#folding#foldtext()
-    set foldlevel=99
 
     " refer to doc to add more commands
 endfunction
