@@ -155,21 +155,37 @@ let NERDTreeMapChangeRoot='\c'
 
 "" lsp
 "ref : https://jdhao.github.io/2020/11/05/pyls_flake8_setup/
-if executable('pyls')
-    " pip install python-language-server
+"if executable('pyls')
+"    " pip install python-language-server
+"    au User lsp_setup call lsp#register_server({
+"        \ 'name': 'pyls',
+"        \ 'cmd': {server_info->['pyls']},
+"        \ 'allowlist': ['python'],
+"        \ 'workspace_config': {
+"        \    'pyls':
+"        \        {'configurationSources': ['flake8'],
+"        \         'plugins': {'flake8': {'enabled': v:true},
+"        \                     'pyflakes': {'enabled': v:false},
+"        \                     'pycodestyle': {'enabled': v:false},
+"        \                    }
+"        \         }
+"        \ }})
+"endif
+
+if executable('pyright-langserver')
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'allowlist': ['python'],
-        \ 'workspace_config': {
-        \    'pyls':
-        \        {'configurationSources': ['flake8'],
-        \         'plugins': {'flake8': {'enabled': v:true},
-        \                     'pyflakes': {'enabled': v:false},
-        \                     'pycodestyle': {'enabled': v:false},
-        \                    }
-        \         }
-        \ }})
+       \ 'name': 'pyright-langserver',
+       \ 'cmd': {server_info->['pyright-langserver','--stdio']},
+       \ 'allowlist': ['python'],
+       \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.root'))},
+       \ 'initialization_options': v:null,
+       \ 'workspace_config':{
+       \    'python': {
+       \        'analysis': {
+       \            'useLibraryCodeForTypes': v:true
+       \        },
+       \    },
+       \ }})
 endif
 
 if executable('gopls')
@@ -217,6 +233,8 @@ function! s:on_lsp_buffer_enabled() abort
 
     let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    "let g:lsp_log_verbose = 1
+    "let g:lsp_log_file = expand('~/vim-lsp.log')
 
     " refer to doc to add more commands
 endfunction
