@@ -18,7 +18,7 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 set expandtab
 set tabstop=4
 set shiftwidth=4
-"auto reload file if ti change on disk
+"auto reload file if it change on disk
 set autoread
 au CursorHold * checktime
 
@@ -46,7 +46,7 @@ nnoremap <S-H>  :vertical resize -5<CR>
 nnoremap <S-L>  :vertical resize +5<CR>
 
 " set encoding
-autocmd FileType c,cpp,objc set colorcolumn=110
+autocmd FileType c,cpp,objc set colorcolumn=120
 autocmd FileType c,cpp,objc highlight ColorColumn ctermbg=darkgray
 set encoding=utf-8
 set termencoding=utf-8
@@ -152,11 +152,11 @@ Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 "clang-format
-let g:clang_format#command = $HOME."/bin/clang-format"
-autocmd FileType c,cpp,objc nnoremap <buffer><buffer>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><buffer>cf :ClangFormat<CR>
+"let g:clang_format#command = $HOME."/bin/clang-format"
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 autocmd FileType c,cpp,objc ClangFormatAutoEnable 
-let g:clang_format#detect_style_file=1
+let g:clang_format#detect_style_file = 1
 
 let g:Lf_ShowDevIcons = 0
 
