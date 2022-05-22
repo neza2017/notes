@@ -3,8 +3,8 @@ set backspace=indent,eol,start
 set number
 set nowrap
 set updatetime=100
-set mouse=a       " Enable mouse (esp. for balloons and scrolling in popups)
-set ttymouse=sgr  " .. also in 'terminals that emit SGR-styled mouse reporting'
+"set mouse=a       " Enable mouse (esp. for balloons and scrolling in popups)
+"set ttymouse=sgr  " .. also in 'terminals that emit SGR-styled mouse reporting'
 
 set foldmethod=indent
 set foldlevel=99
@@ -18,7 +18,10 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 set expandtab
 set tabstop=4
 set shiftwidth=4
+"auto reload file if ti change on disk
 set autoread
+au CursorHold * checktime
+
 set ignorecase
 set smartcase
 
@@ -33,40 +36,52 @@ colorscheme darkblue
 "" 2. open quickfix-list to navigate the result     -> :copen
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn .git generated'
 set grepprg=/bin/grep\ -nH
-noremap gn :cn<CR>
-noremap gp :cp<CR>
+nnoremap gn :cn<CR>
+nnoremap gp :cp<CR>
 
 " Resize split 
-noremap <S-J>  :res +5<CR>
-noremap <S-K>  :res -5<CR>
-noremap <S-H>  :vertical resize -5<CR>
-noremap <S-L>  :vertical resize +5<CR>
+nnoremap <S-J>  :res +5<CR>
+nnoremap <S-K>  :res -5<CR>
+nnoremap <S-H>  :vertical resize -5<CR>
+nnoremap <S-L>  :vertical resize +5<CR>
 
 " set encoding
-"set colorcolumn=110
-"highlight ColorColumn ctermbg=darkgray
+autocmd FileType c,cpp,objc set colorcolumn=110
+autocmd FileType c,cpp,objc highlight ColorColumn ctermbg=darkgray
 set encoding=utf-8
 set termencoding=utf-8
 set fileencoding=utf-8
 
-"nnoremap <C-J> <C-W><C-J>
-"nnoremap <C-K> <C-W><C-K>
-"nnoremap <C-L> <C-W><C-L>
-"nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 "nnoremap <C-W> <C-W><C-W>
 
-nnoremap <C-H> <C-W><C-W>
-nnoremap <C-U> :tabn<cr>
+tnoremap <C-J> <C-W><C-J>
+tnoremap <C-K> <C-W><C-K>
+tnoremap <C-L> <C-W><C-L>
+tnoremap <C-H> <C-W><C-H>
+tnoremap <ESC><ESC> <C-\><C-n>
+
+"nnoremap <C-H> <C-W><C-W>
+"nnoremap <C-U> :tabn<cr>
+
+nnoremap <f5> :tabp<cr>
+nnoremap <f6> :tabn<cr>
+nnoremap <f7> :tabnew %<cr>
+
+nnoremap <expr>s col(".")==1?"$":"0"
 
 " page down and page up
-nnoremap <C-J> <C-D>
-nnoremap <C-K> <C-U>
+"nnoremap <C-J> <C-D>
+"nnoremap <C-K> <C-U>
 
 " highlight search
 set hlsearch
 set incsearch
 nnoremap gfn :nohl<CR>
-inoremap gfn :nohl<CR>a
+"inoremap gfn :nohl<CR>a
 
 "copy to system clipboard
 noremap <Leader>y  "+y
@@ -94,8 +109,8 @@ nnoremap gff yiw/\V<C-R>=escape(@",'/\')<CR><CR>
 
 nnoremap <space> :
 vnoremap <space> :
-inoremap jj <esc>
-cnoremap jj <c-c><esc>
+"inoremap jj <esc>
+"cnoremap jj <c-c><esc>
 
 set undofile
 if !isdirectory($HOME."/.vim/undodir")
@@ -103,9 +118,18 @@ if !isdirectory($HOME."/.vim/undodir")
 endif
 set undodir =$HOME."/.vim/undodir"
 
+set splitright
+let g:termdebug_wide=1
+packadd termdebug
+
+command! -nargs=0 Bash vert term zsh
+
 call plug#begin('~/.vim/plugged')
 
-"" git
+" clang-format
+Plug 'rhysd/vim-clang-format'
+
+" git
 Plug 'tpope/vim-fugitive'
 
 Plug 'preservim/nerdtree'
@@ -119,14 +143,20 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 
 " vim proc
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'shougo/vimshell.vim'
+"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+"Plug 'shougo/vimshell.vim'
 
 " Auto Pair
 Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
+"clang-format
+let g:clang_format#command = $HOME."/bin/clang-format"
+autocmd FileType c,cpp,objc nnoremap <buffer><buffer>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><buffer>cf :ClangFormat<CR>
+autocmd FileType c,cpp,objc ClangFormatAutoEnable 
+let g:clang_format#detect_style_file=1
 
 let g:Lf_ShowDevIcons = 0
 
@@ -142,13 +172,17 @@ let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
 
 let g:Lf_ShortcutF = "<leader>ff"
 
+noremap mm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+noremap ff :<C-U><C-R>=printf("Leaderf file")<CR><CR>
+noremap gl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
 noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
 noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
 noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 noremap <leader>fh :Leaderf rg 
+noremap <leader>fr :Leaderf --recall<CR> 
 
-nmap <c-n> :NERDTreeToggle<cr>
+nmap <f2> :NERDTreeToggle<cr>
 let NERDTreeMapUpdir='\u'
 let NERDTreeMapUpdirKeepOpen='\U'
 let NERDTreeMapChangeRoot='\c'
@@ -214,7 +248,7 @@ if executable('ccls')
       \ 'name': 'ccls',
       \ 'cmd': {server_info->['ccls']},
       \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-      \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls') }},
+      \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls') }, "index": {"threads": 12}},
       \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp', 'cc', 'cu'],
       \ })
 endif
@@ -258,3 +292,6 @@ let g:lsp_diagnostics_echo_cursor = 1
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+"gdb debug
+command! -nargs=* DebugT TermdebugCommand t <args>
